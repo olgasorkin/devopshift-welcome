@@ -1,9 +1,42 @@
 services:
-  web:
-
+  mysqldb:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: crypto_db
+    networks:
+      - crypto-net
+    volumes:
+      - mysql_data:/var/lib/mysql
 
   backend-service:
+    build: ./be
+    depends_on:
+      - mysqldb
+    ports:
+      - "5001:5001"
+    networks:
+      - crypto-net
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: "123456"
+      MYSQL_DATABASE: crypto_db
 
+  web:
+    build: ./fe
+    depends_on:
+      - backend-service
+    ports:
+      - "5002:5002"
+    networks:
+      - crypto-net
+    environment:
+      BACKEND_URL: http://backend-service:5001
 
-  mysqldb:
-      
+networks:
+  crypto-net:
+    driver: bridge
+
+volumes:
+  mysql_data:

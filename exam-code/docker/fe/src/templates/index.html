@@ -11,7 +11,7 @@
             let output = "";
             if (Array.isArray(data)) {
                 data.forEach(entry => {
-                    output += `<p>${entry.coin.toUpperCase()}: $${entry.price} - Saved to databse: ${entry.saved}</p>`;
+                    output += `<p>${entry.coin.toUpperCase()}: $${entry.price} - Saved to database: ${entry.saved}</p>`;
                 });
             } else {
                 output = `<p>Error fetching prices.</p>`;
